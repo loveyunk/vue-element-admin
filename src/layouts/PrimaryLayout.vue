@@ -1,47 +1,62 @@
 <template>
-  <div class="primary-layout">
-    <app-sidebar />
+  <div :class="classes">
+    <TheSidebar />
     <div class="main">
-      <app-header></app-header>
-      <div class="content">
-        <Breadcrumb class="breadcrumb" />
+      <TheTopBar />
+
+      <div class="p-6">
+        <Breadcrumb class="pt-2 pb-5" />
         <slot />
       </div>
-      <app-footer></app-footer>
+
+      <TheFooter />
     </div>
   </div>
 </template>
 
 <script>
-import AppHeader from '../components/AppHeader';
-import AppSidebar from '../components/AppSidebar';
-import Breadcrumb from '../components/Breadcrumb';
-import AppFooter from '../components/AppFooter';
+import { mapState } from 'vuex';
+import TheTopBar from '../components/TheTopBar/index.vue';
+import TheSidebar from '../components/TheSidebar/index.vue';
+import Breadcrumb from '../components/Breadcrumb/index.vue';
+import TheFooter from '../components/TheFooter/index.vue';
 
 export default {
-  name: 'PrimaryLayout',
   components: {
-    AppSidebar,
+    TheSidebar,
     Breadcrumb,
-    AppHeader,
-    AppFooter
+    TheTopBar,
+    TheFooter
+  },
+
+  computed: {
+    ...mapState('app', ['sidebar']),
+
+    classes() {
+      return [
+        'primary-layout',
+        {
+          hideSidebar: this.sidebar.isCollapse,
+          openSidebar: !this.sidebar.isCollapse
+        }
+      ];
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '../styles/variable.scss';
+
 .primary-layout {
-  display: flex;
+  min-height: 100%;
+  transition: margin-left 0.28s;
+  margin-left: $sidebarWidth;
   .main {
-    flex: 1 1;
     height: 100vh;
-    width: calc(100% - 256px);
-    padding-top: 72px;
+    padding-top: 42px;
     overflow-y: scroll;
     overflow-x: hidden;
-    .content {
-      padding: 24px;
-    }
   }
 }
 </style>

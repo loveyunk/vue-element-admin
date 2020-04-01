@@ -14,6 +14,7 @@ const mutations = {
     localStorage.setItem('user', JSON.stringify(userData));
     services.defaults.headers.common.Authorization = `Bearer ${userData.token}`;
   },
+
   LOGOUT() {
     localStorage.removeItem('user');
     window.location.reload();
@@ -42,6 +43,7 @@ const actions = {
         });
     });
   },
+
   logout({ commit }) {
     commit('LOGOUT');
   }

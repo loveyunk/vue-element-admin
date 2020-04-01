@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 /**
  * Query which layout should be used for the current path based on the configuration.
  * @param   {layouts}     layouts   Layout configuration.
@@ -66,12 +68,38 @@ export function queryAncestors(array, current, parentId, id = 'id') {
   return result;
 }
 
-export function compare(property) {
-  return function(obj1, obj2) {
-    const value1 = obj1[property];
-    const value2 = obj2[property];
-    return value1 - value2;
-  };
+/**
+ * Convert an array to a tree-structured array.
+ * @param   {array}     array     The Array need to Converted.
+ * @param   {string}    id        The alias of the unique ID of the object in the array.
+ * @param   {string}    parentId       The alias of the parent ID of the object in the array.
+ * @param   {string}    children  The alias of children of the object in the array.
+ * @return  {array}    Return a tree-structured array.
+ */
+export function arrayToTree(
+  array,
+  id = 'id',
+  parentId = 'pid',
+  children = 'children'
+) {
+  const result = [];
+  const hash = {};
+  const data = cloneDeep(array);
+
+  data.forEach((item, index) => {
+    hash[data[index][id]] = data[index];
+  });
+
+  data.forEach(item => {
+    const hashParent = hash[item[parentId]];
+    if (hashParent) {
+      if (!hashParent[children]) hashParent[children] = [];
+      hashParent[children].push(item);
+    } else {
+      result.push(item);
+    }
+  });
+  return result;
 }
 
 export function add0(m) {
@@ -89,3 +117,18 @@ export function formatDate(timeStamp) {
 
   return `${y}-${add0(m)}-${add0(d)} ${add0(h)}:${add0(mm)}:${add0(s)}`;
 }
+
+export const uuid = () =>
+  Math.random()
+    .toString(16)
+    .slice(2);
+
+export const isEmpty = obj => {
+  for (const prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+
+  return JSON.stringify(obj) === JSON.stringify({});
+};

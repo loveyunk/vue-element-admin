@@ -1,46 +1,39 @@
 <template>
-  <page-container>
-    <div class="user-container">
-      <user-filter
-        class="user-filter"
-        :filter="$route.query"
-        :on-filter-change="handleFilterChange"
-        @on-add="handleAdd"
-      ></user-filter>
-      <user-list
-        :data-source="list"
-        :loading="loading"
-        @on-delete-item="handleDelteItem"
-        @on-edit-item="handleEditItem"
-      ></user-list>
-      <user-modal
-        :type="modalType"
-        :visible.sync="modalVisible"
-        :item="currentItem"
-        @on-ok="handleOk"
-      ></user-modal>
-      <div class="pagination-wrapper">
-        <el-pagination
-          v-if="list.length"
-          v-bind="pagination"
-          layout="total, sizes, prev, pager, next, jumper"
-          background
-          :page-sizes="[10, 20, 30, 40]"
-          @current-change="handleCurrentPageChange"
-          @size-change="handlePageSizeChange"
-        ></el-pagination>
-      </div>
-    </div>
-  </page-container>
+  <PageContainer :loading="loading">
+    <UserFilter
+      class="pb-6"
+      :filter="$route.query"
+      :on-filter-change="handleFilterChange"
+      @add-item="addItem"
+    />
+
+    <UserList
+      :data-source="list"
+      @on-delete-item="deleteItem"
+      @on-edit-item="editItem"
+    />
+
+    <UserModal
+      :type="modalType"
+      :visible.sync="modalVisible"
+      :item="currentItem"
+      @on-ok="handleOk"
+    />
+
+    <el-pagination
+      v-if="list.length"
+      class="text-right pt-5 pb-4"
+      v-bind="pagination"
+      layout="total, sizes, prev, pager, next, jumper"
+      background
+      :page-sizes="[10, 20, 30, 40]"
+      @current-change="handleCurrentPageChange"
+      @size-change="handlePageSizeChange"
+    />
+  </PageContainer>
 </template>
 
 <script>
-import {
-  queryUserList,
-  removeUser,
-  createUser,
-  updateUser
-} from '@/services/user';
 import omitEmpty from 'omit-empty';
 import PageContainer from '../../components/PageContainer/index.vue';
 import UserList from './components/List.vue';
@@ -48,17 +41,24 @@ import UserModal from './components/Modal.vue';
 import UserFilter from './components/Filter.vue';
 import shallowEqual from '../../utils/shallowEqual';
 
+import {
+  queryUserList,
+  removeUser,
+  createUser,
+  updateUser
+} from '../../services/user';
+
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_CURRENT_PAGE = 1;
 
 export default {
-  name: 'UserPage',
   components: {
     PageContainer,
     UserList,
     UserModal,
     UserFilter
   },
+
   data() {
     return {
       loading: false,
@@ -73,6 +73,7 @@ export default {
       }
     };
   },
+
   watch: {
     $route: {
       handler({ query }) {
@@ -81,6 +82,7 @@ export default {
       immediate: true
     }
   },
+
   methods: {
     /**
      * @param {Object} query
@@ -98,7 +100,8 @@ export default {
       this.pagination.currentPage = Number(query.page) || DEFAULT_CURRENT_PAGE;
       this.loading = false;
     },
-    handleRefresh(newQuery = {}) {
+
+    refreshList(newQuery = {}) {
       const query = { ...this.$route.query, ...newQuery };
       if (!shallowEqual(query, this.$route.query)) {
         this.$router.push({
@@ -111,36 +114,42 @@ export default {
         this.fetchUserList(query);
       }
     },
-    async handleDelteItem(id) {
+
+    async deleteItem(id) {
       this.loading = true;
       await removeUser(id);
-      this.handleRefresh({
+      this.refreshList({
         page:
           this.list.length === 1 && this.pagination.currentPage > 1
             ? this.pagination.currentPage - 1
             : this.pagination.currentPage
       });
     },
-    handleEditItem(item) {
+
+    editItem(item) {
       this.currentItem = { ...item };
       this.modalType = 'update';
       this.modalVisible = true;
     },
+
     handleCurrentPageChange(page) {
-      this.handleRefresh({
+      this.refreshList({
         page
       });
     },
+
     handlePageSizeChange(pageSize) {
-      this.handleRefresh({
+      this.refreshList({
         pageSize
       });
     },
-    handleAdd() {
+
+    addItem() {
       this.currentItem = {};
       this.modalVisible = true;
       this.modalType = 'create';
     },
+
     async handleOk(data, type) {
       if (type === 'create') {
         const id = Math.floor(Math.random() * 10000000);
@@ -150,25 +159,12 @@ export default {
         await updateUser(data.id, { ...data });
       }
       this.modalVisible = false;
-      this.handleRefresh();
+      this.refreshList();
     },
+
     handleFilterChange(fields) {
-      this.handleRefresh({ ...fields, page: DEFAULT_CURRENT_PAGE });
+      this.refreshList({ ...fields, page: DEFAULT_CURRENT_PAGE });
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.user-container {
-  margin: 20px 0px;
-  background: #fff;
-  .user-filter {
-    margin-bottom: 20px;
-  }
-  .pagination-wrapper {
-    text-align: right;
-    padding: 30px 0;
-  }
-}
-</style>

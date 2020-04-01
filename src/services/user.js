@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '../utils/request';
 
 export const queryUserList = ({ page = 1, pageSize = 10, ...rest } = {}) => {
   return request({

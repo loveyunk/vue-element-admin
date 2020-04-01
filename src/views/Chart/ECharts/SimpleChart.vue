@@ -1,9 +1,34 @@
 <template>
-  <div></div>
+  <div class="con">
+    <UseEChart class="foo" :data-source="foo" />
+  </div>
 </template>
 
 <script>
-export default {};
-</script>
+import UseEChart from '../../../components/UseEChart/index.vue';
 
-<style lang="scss" scoped></style>
+export default {
+  components: {
+    UseEChart
+  },
+  data() {
+    this.foo = {
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar'
+        }
+      ]
+    };
+
+    return {};
+  }
+};
+</script>

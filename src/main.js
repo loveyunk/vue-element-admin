@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import * as filters from './filters';
 import 'normalize.css';
 import './styles/index.scss';
+import './styles/tailwind.css';
 import './permission';
 
 Vue.config.productionTip = false;

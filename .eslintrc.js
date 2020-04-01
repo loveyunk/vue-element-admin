@@ -7,11 +7,5 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
-  rules: {
-    'func-names': 'off',
-    'import/extensions': 'off',
-    'no-shadow': ['error', { allow: ['state'] }],
-    'consistent-return': 'off',
-    'import/no-cycle': 'off'
-  }
+  rules: {}
 };

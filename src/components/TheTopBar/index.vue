@@ -1,8 +1,10 @@
 <template>
-  <header class="header">
-    <div class="left"></div>
+  <header class="top-bar">
+    <div>
+      <i class="el-icon-edit" @click="toggleSidebar" />
+    </div>
     <el-dropdown>
-      <el-avatar :src="user.avatar"></el-avatar>
+      <el-avatar class="cursor-pointer" :src="user.avatar" />
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>我的主页</el-dropdown-item>
         <el-dropdown-item>设置</el-dropdown-item>
@@ -16,11 +18,15 @@
 import { mapState } from 'vuex';
 
 export default {
-  name: 'AppHeader',
   computed: {
     ...mapState('user', ['user'])
   },
+
   methods: {
+    toggleSidebar() {
+      this.$store.dispatch('app/toggleSideBar');
+    },
+
     logout() {
       this.$store.dispatch('user/logout');
     }
@@ -29,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header {
+.top-bar {
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;

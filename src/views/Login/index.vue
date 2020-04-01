@@ -1,12 +1,12 @@
 <template>
-  <div class="login-container">
+  <div class="login-container bg-white p-8 shadow-sm rounded-sm">
     <el-form
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
     >
-      <h1 class="title">vue-element-admin</h1>
+      <h1 class="text-xl font-bold text-center mb-4">Vue Element Admin</h1>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -39,7 +39,6 @@
 import { mapActions } from 'vuex';
 
 export default {
-  name: 'Login',
   data() {
     return {
       loginForm: {
@@ -56,6 +55,7 @@ export default {
       redirect: null
     };
   },
+
   watch: {
     $route: {
       handler(route) {
@@ -67,8 +67,10 @@ export default {
       immediate: true
     }
   },
+
   methods: {
     ...mapActions('user', ['login']),
+
     handleLogin() {
       this.$refs.loginForm.validate(async valid => {
         if (valid) {
@@ -101,19 +103,5 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 320px;
-  padding: 36px;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.08);
-  background: #f8f8f8;
-  border-radius: 2px;
-  .title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-  .login-form {
-    .title {
-      text-align: center;
-    }
-  }
 }
 </style>

@@ -2,14 +2,14 @@
   <el-dialog
     :title="type === 'create' ? '创建用户' : '更新用户'"
     :visible.sync="modalVisible"
-    @close="handleClose"
+    @close="reset"
   >
     <el-form ref="item" :model="item" :rules="rules" label-width="80px">
       <el-form-item label="名字" prop="name">
-        <el-input v-model="item.name"></el-input>
+        <el-input v-model="item.name" />
       </el-form-item>
       <el-form-item label="昵称" prop="nickName">
-        <el-input v-model="item.nickName"></el-input>
+        <el-input v-model="item.nickName" />
       </el-form-item>
       <el-form-item label="性别" prop="isMale">
         <el-radio-group v-model="item.isMale">
@@ -23,31 +23,24 @@
           controls-position="right"
           :min="18"
           :max="100"
-        ></el-input-number>
+        />
       </el-form-item>
       <el-form-item label="电话" prop="phone">
-        <el-input v-model="item.phone"></el-input>
+        <el-input v-model="item.phone" />
       </el-form-item>
       <el-form-item label="电子邮件" prop="email">
-        <el-input v-model="item.email"></el-input>
+        <el-input v-model="item.email" />
       </el-form-item>
-      <!-- <el-form-item label="地址" prop="address">
-        <el-cascader
-          :options="city"
-        ></el-cascader>
-      </el-form-item> -->
     </el-form>
     <span slot="footer">
-      <el-button @click="handleCancel">取 消</el-button>
+      <el-button @click="modalVisible = false">取 消</el-button>
       <el-button type="primary" @click="handleOk">确 定</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-// import city from "@/utils/city";
 export default {
-  name: 'UserModal',
   props: {
     visible: {
       type: Boolean,
@@ -62,8 +55,8 @@ export default {
       required: true
     }
   },
+
   data() {
-    // this.city = city;
     const validatePhone = (rule, value, callback) => {
       const regexp = /^1[34578]\d{9}$/;
       if (!regexp.test(value)) {
@@ -72,6 +65,7 @@ export default {
         callback();
       }
     };
+
     const validateEmail = (rule, value, callback) => {
       const regexp = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
       if (!regexp.test(value)) {
@@ -80,6 +74,7 @@ export default {
         callback();
       }
     };
+
     return {
       rules: {
         name: [{ required: true, trigger: 'blur' }],
@@ -94,10 +89,10 @@ export default {
           { required: true, trigger: 'blur' },
           { validator: validateEmail, trigger: 'blur' }
         ]
-        // address: [{ required: true, trigger: 'blur' }]
       }
     };
   },
+
   computed: {
     modalVisible: {
       get() {
@@ -108,9 +103,9 @@ export default {
       }
     }
   },
+
   methods: {
     handleOk() {
-      // eslint-disable-next-line consistent-return
       this.$refs.item.validate(valid => {
         if (valid) {
           this.$emit('on-ok', this.item, this.type);
@@ -119,14 +114,9 @@ export default {
         }
       });
     },
-    handleCancel() {
-      this.modalVisible = false;
-    },
+
     reset() {
       this.$refs.item.resetFields();
-    },
-    handleClose() {
-      this.reset();
     }
   }
 };

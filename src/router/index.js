@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Dashboard from '../views/Dashboard';
-import User from '../views/User';
-import Login from '../views/Login';
-import ECharts from '../views/Chart/ECharts';
-import NotFound from '../views/NotFound';
+import Dashboard from '../views/Dashboard/index.vue';
+import User from '../views/User/index.vue';
+import Login from '../views/Login/index.vue';
+import ECharts from '../views/Chart/ECharts/index.vue';
+import NotFound from '../views/NotFound/index.vue';
 
 Vue.use(VueRouter);
 
@@ -32,12 +32,11 @@ const routes = [
   {
     path: '/404',
     name: '404',
-    component: NotFound,
-    props: true
+    component: NotFound
   },
   {
     path: '*',
-    redirect: { name: '404', params: { resource: 'page' } }
+    redirect: { name: '404' }
   }
 ];
 

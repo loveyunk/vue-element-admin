@@ -1,12 +1,13 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
+  <el-breadcrumb class="breadcrumb" separator="/">
     <el-breadcrumb-item v-for="(item, index) in paths" :key="item.path">
-      <span v-if="paths.length - 1 === index" class="text">{{
-        item.title
-      }}</span>
-      <a v-else class="link" @click.prevent="handleLink(item)">{{
-        item.title
-      }}</a>
+      <span v-if="paths.length - 1 === index" class="text">
+        {{ item.title }}
+      </span>
+
+      <a v-else class="link" @click.prevent="handleLink(item)">
+        {{ item.title }}
+      </a>
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
@@ -21,19 +22,20 @@ export default {
       paths: null
     };
   },
+
   watch: {
-    $route() {
-      this.generateBreadcrumbs();
+    $route: {
+      handler() {
+        this.generateBreadcrumbs();
+      },
+      immediate: true
     }
   },
-  created() {
-    this.generateBreadcrumbs();
-  },
+
   methods: {
     generateBreadcrumbs() {
       // Find a route that matches the name
       const currentRoute = routeList.find(_ => _.name === this.$route.name);
-      console.log(currentRoute);
       this.paths = currentRoute
         ? queryAncestors(
             routeList,
@@ -48,6 +50,7 @@ export default {
             }
           ];
     },
+
     handleLink(item) {
       const { name } = item;
       this.$router.push({ name });
@@ -57,15 +60,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-breadcrumb {
+.breadcrumb {
   .text,
   .link {
     font-size: 13px;
     color: rgba(0, 0, 0, 0.45);
     font-weight: normal;
+    // @apply p-4 bg-teal-dark h-full overflow-auto;
   }
   .link:hover {
     color: #2593fc;
+  }
+  .board {
+    // @apply p-4 bg-teal-dark h-full overflow-auto;
   }
 }
 </style>

@@ -1,1 +1,1 @@
-export { formatDate } from '@/utils';
+export { formatDate } from '../utils';
