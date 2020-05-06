@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import BaseLayout from './layouts/BaseLayout.vue';
+import BaseLayout from './layouts/index.vue';
 
 export default {
   components: {

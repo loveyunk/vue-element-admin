@@ -14,30 +14,29 @@ export default [
   },
   {
     id: 3,
-    title: '错误页面',
-    breadcrumbParentId: 1,
-    menuParentId: -1
-  },
-  {
-    id: 31,
-    name: '404',
-    title: '404',
-    breadcrumbParentId: 3,
-    menuParentId: -1
-  },
-  {
-    id: 4,
     title: '图表',
     icon: 'el-icon-phone',
     breadcrumbParentId: 1
   },
   {
-    id: 41,
+    id: 31,
     name: 'echarts',
     title: 'ECharts',
     icon: 'el-icon-picture-outline',
-    breadcrumbParentId: 4,
-    menuParentId: 4
+    breadcrumbParentId: 3,
+    menuParentId: 3
+  },
+  {
+    id: 4,
+    name: 'login',
+    title: '登录',
+    menuParentId: -1
+  },
+  {
+    id: 5,
+    name: '404',
+    title: '404',
+    menuParentId: -1
   },
   {
     // TODO:

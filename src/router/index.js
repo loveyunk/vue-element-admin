@@ -12,27 +12,42 @@ const routes = [
   {
     path: '/',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      layout: 'primary'
+    }
   },
   {
     path: '/user',
     name: 'user',
-    component: User
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
+    component: User,
+    meta: {
+      layout: 'primary'
+    }
   },
   {
     path: '/chart/ECharts',
     name: 'echarts',
-    component: ECharts
+    component: ECharts,
+    meta: {
+      layout: 'primary'
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: {
+      layout: 'blank'
+    }
   },
   {
     path: '/404',
     name: '404',
-    component: NotFound
+    component: NotFound,
+    meta: {
+      layout: 'blank'
+    }
   },
   {
     path: '*',
